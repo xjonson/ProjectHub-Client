@@ -1,27 +1,47 @@
-# ProjHub
+# Project-Hub
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+中文名还没想好
 
-## Development server
+这个项目是我在学习 angular 时做的，同时临近毕业打算作为毕业设计。项目分为 [移动客户端](https://github.com/xjonson/ProjectHub-Client-Mobile)、[PC端后台管理](https://github.com/xjonson/ProjectHub-Admin)、[server端](https://github.com/xjonson/ProjectHub-BackEnd)。这是移动客户端。
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## 介绍
 
-## Code scaffolding
+- ~~当前使用fake api，将来会使用node代替~~已经使用node后端提供api
+- 用户可以注册、登录，除管理员外具有 需求方(demander)和开发方(developer)身份
+- 需求方可发布项目需求，经过后台审核通过后可展示在项目大厅
+- 开发方可查看项目、留言、申请接单
+- 通过需求方审核后的会确定项目的开发方，双方互相对接，推动项目的开发
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## 开发环境
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+- Node.js v8.9.4
+- Angular v7.3.0
+- Angular Material v7.2.0
+- TypeScript v3.2.2
+- json-server v0.14.2
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 使用
 
-## Running end-to-end tests
+请先确保你已拥有以上环境
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```bash
+git clone git@github.com:xjonson/ProjectHub-Client-Mobile.git
+```
 
-## Further help
+```bash
+cd ProjectHub-Client-Mobile
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+npm install
+
+npm run dev
+```
+
+然后打开 [http://localhost:4200/](http://localhost:4200/) 即可预览效果
+
+server端api请[移步这里](https://github.com/xjonson/ProjectHub-BackEnd)
+
+## 展示
+
+![user_login](./screenshots/user_login.png)![user_register](./screenshots/user_register.png)![user_profile](./screenshots/user_profile.png)![project_list](./screenshots/project_list.png)![project_edit](./screenshots/project_edit.png)![project_detail](./screenshots/project_detail.png)![msgs](./screenshots/msgs.png)
