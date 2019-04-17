@@ -11,7 +11,7 @@ export class ProjectStatusPipe implements PipeTransform {
 
 // 返回项目状态详细
 @Pipe({name: 'projectStatusText'})
-export class ProjectStatusPipeText implements PipeTransform {
+export class ProjectStatusTextPipe implements PipeTransform {
   transform(value: number): string {
     return StatusText[value]
   }
