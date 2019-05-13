@@ -1,0 +1,153 @@
+<div nz-row
+  nzType="flex"
+  nzJustify="center"
+  nzAlign="middle"
+  class="login">
+  <div nz-col
+    nzSpan="6">
+    <h1>登录ProjectHub</h1>
+    <p>在ProjectHub轻松实现需求与开发完美对接</p>
+    <form nz-form
+      [formGroup]="registerForm"
+      class="login-form"
+      (ngSubmit)="submitForm()">
+      <!-- 邮箱 -->
+      <nz-form-item>
+        <nz-form-control>
+          <input type="text"
+            nz-input
+            formControlName="email"
+            placeholder="邮箱（请正确填写，用于登录）"
+            required />
+          <nz-form-explain *ngIf="email.errors && email.dirty">
+            <span *ngIf="email.getError('required') Else emailInvaildTpl">
+              请输入邮箱
+            </span>
+            <ng-template #emailInvaildTpl>请输入正确邮箱格式</ng-template>
+          </nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- 密码 -->
+      <form nz-form
+        formGroupName="pwd">
+        <nz-form-item>
+          <nz-form-control>
+            <input type="password"
+              nz-input
+              formControlName="password"
+              placeholder="密码，6~15位"
+              required />
+            <nz-form-explain *ngIf="password.errors && password.dirty">
+              <ng-container *ngIf="password.getError('required')">
+                请输入密码
+              </ng-container>
+              <ng-container *ngIf="password.getError('minlength')">
+                密码不可小于6位
+              </ng-container>
+              <ng-container *ngIf="password.getError('maxlength')">
+                密码不可大于15位
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <input type="password"
+              nz-input
+              formControlName="password2"
+              placeholder="确认密码"
+              required />
+            <nz-form-explain *ngIf="pwd.errors && password.valid && password2.dirty">
+              <ng-container>{{ pwd.getError('notEqual') }}</ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <form nz-form
+        formGroupName="profile">
+        <!-- 昵称 -->
+        <nz-form-item>
+          <nz-form-control>
+            <input type="text"
+              nz-input
+              formControlName="name"
+              placeholder="昵称"
+              required />
+            <nz-form-explain *ngIf="name.errors && name.dirty">
+              <ng-container *ngIf="name.getError('required')">
+                请输入昵称
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- 手机号 -->
+        <nz-form-item>
+          <nz-form-control>
+            <input type="text"
+              nz-input
+              formControlName="phone"
+              placeholder="手机号（请正确填写）"
+              maxlength="11"
+              required />
+            <nz-form-explain *ngIf="phone.errors && phone.dirty">
+              <ng-container *ngIf="phone.getError('required')">
+                请输入手机号
+              </ng-container>
+              <ng-container *ngIf="phone.getError('pattern')">
+                请输入正确手机号
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <!-- 身份 -->
+      <nz-form-item>
+        <nz-form-control>
+          <nz-radio-group formControlName="role"
+            [nzButtonStyle]="'solid'">
+            <label nz-radio-button
+              [nzValue]="2">
+              <img src="../../../../assets/image/user_demand.png"
+                alt="">需求方
+            </label>
+            <label nz-radio-button
+              [nzValue]="3">
+              <img src="../../../../assets/image/user_dev.png"
+                alt="">开发方
+            </label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- 技能 -->
+      <nz-form-item *ngIf="this.registerForm.value.role === 3">
+        <nz-form-control>
+          <nz-select style="width: 100%"
+            nzMode="multiple"
+            nzPlaceHolder="选择你擅长的技能"
+            formControlName="skill">
+            <nz-option *ngFor="let skill of skills"
+              [nzLabel]="skill.name"
+              [nzValue]="skill"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- 协议 -->
+      <label nz-checkbox
+        formControlName="agree"
+        class="mb-4">
+        <span>同意 <a>《ProjectHub用户服务协议》</a></span>
+      </label>
+
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button
+            class="login-form-button"
+            type="submit"
+            [disabled]="registerForm.invalid"
+            nzType="primary">注册</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+
+</div>

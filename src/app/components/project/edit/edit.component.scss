@@ -1,0 +1,92 @@
+ul.project-type {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0;
+
+  div {
+    border-radius: 4px;
+    border: 1px solid #fff;
+
+    &.on,
+    &:hover {
+      border-color: #4289dc;
+    }
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+    width: 110px;
+    height: 80px;
+    cursor: pointer;
+
+    i {
+      font-size: 26px;
+      color: #4289dc;
+    }
+
+    span {
+      line-height: 1;
+    }
+  }
+}
+
+$width: 50px;
+$border: 1px solid #eee;
+
+.list {
+  border: $border;
+  border-radius: 4px;
+  overflow: hidden;
+
+  span {
+    display: block;
+    white-space: nowrap;
+
+    &.on {
+      background-color: #4289dc;
+      color: #fff;
+    }
+  }
+
+  .fun1-wrap,
+  .fun2-wrap {
+    min-height: $width;
+  }
+
+  .fun1-wrap:not(:last-child),
+  .fun2-wrap:not(:last-child),
+  .fun3-wrap:not(:last-child) {
+    border-bottom: $border;
+  }
+
+  .fun1-wrap,
+  .fun2-wrap:not(.is-leaf) {
+    display: flex;
+    position: relative;
+    padding-left: $width;
+    flex-direction: column;
+
+    &>span {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      text-align: center;
+      line-height: $width - 2px;
+      writing-mode: tb;
+      border-right: $border;
+    }
+  }
+
+  .fun2-wrap.is-leaf,
+  .fun3-wrap {
+    text-align: center;
+    line-height: $width;
+  }
+
+}

@@ -7,43 +7,34 @@ import { AppComponent } from './app/app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthService } from './service/auth.service';
-import { UserService } from './service/user.service';
-import { SkillService } from './service/skill.service';
-import { ProjectService } from './service/project.service';
 import { AuthInterceptor } from './service/AuthInterceptor';
-import { UploadService } from './service/upload.service';
-import { MsgService } from './service/msg.service';
 import { HomeComponent } from './components/home/home.component';
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
-  ],
-  entryComponents: [
-    
+    HomeComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    /** 导入 ng-zorro-antd 模块 **/
     NgZorroAntdModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule
   ],
   providers: [
+    // i18n
     { provide: NZ_I18N, useValue: zh_CN },
-    AuthService,
-    UserService,
-    ProjectService,
-    SkillService,
-    UploadService,
-    MsgService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    // http拦截器
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    // 路由hash模式
+    { provide: LocationStrategy, useClass: HashLocationStrategy, }
   ],
   bootstrap: [AppComponent]
 })

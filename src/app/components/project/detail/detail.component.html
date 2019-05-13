@@ -1,0 +1,157 @@
+<nz-row nzGutter="16"
+  *ngIf="project; else Nzspin">
+  <nz-col nzSpan="18">
+    <nz-card class="mb-3 project-info">
+      <div class="d-flex align-item-center justify-content-between">
+        <h1>{{project.title}}
+          <nz-tag [nzColor]="'#4289dc'">{{project.project_type}}</nz-tag>
+        </h1>
+        <span [ngSwitch]="project.status">
+          <nz-tag *ngSwitchCase="0"
+            nzColor="gold">招募中</nz-tag>
+          <nz-tag *ngSwitchCase="1"
+            nzColor="red">开发中</nz-tag>
+          <nz-tag *ngSwitchCase="2"
+            nzColor="blue">验收中</nz-tag>
+          <nz-tag *ngSwitchCase="3">已完成</nz-tag>
+        </span>
+      </div>
+      <p>{{project.create_time | date: 'yyyy-MM-dd hh:mm:ss'}}</p>
+      <ul class="clearfix">
+        <li>
+          项目预算<span class="red">￥{{project.price | number}}</span>
+        </li>
+        <li>|</li>
+        <li>
+          项目估价<span class="red">￥{{project.project_assess}}</span>
+        </li>
+        <li>|</li>
+        <li>
+          开发周期<span>{{project.cycle}}天</span>
+        </li>
+      </ul>
+      <h2>项目描述</h2>
+      <p>{{project.desc}}</p>
+      <h2>技能需求</h2>
+      <ul class="clearfix">
+        <nz-tag *ngFor="let skill of project.skills">{{skill.name}}</nz-tag>
+      </ul>
+      <h2>功能概览</h2>
+      <p *ngFor="let item of project.project_fun">
+        <span *ngFor="let item2 of item">
+          {{item2.title}}-
+        </span>
+      </p>
+    </nz-card>
+    <nz-card>
+      <nz-list *ngIf="project?.comments.length" [nzDataSource]="project?.comments"
+        [nzRenderItem]="item"
+        [nzItemLayout]="'horizontal'">
+        <ng-template #item
+          let-item>
+          <nz-comment [nzAuthor]="UserName"
+            [nzDatetime]="item.create_time | date: 'yyyy-MM-dd hh:mm:ss'">
+            <ng-template #UserName>
+              <a [routerLink]="['/user/profile', item.user._id]">{{item.user.profile.name + '・' + item.user.email}}</a>
+            </ng-template>
+            <nz-avatar nz-comment-avatar
+              nzIcon="user"
+              [routerLink]="['/user/profile', item.user._id]"
+              [nzSrc]="item.user.profile.avatar"></nz-avatar>
+            <nz-comment-content>
+              <p>{{ item.content }}</p>
+            </nz-comment-content>
+          </nz-comment>
+        </ng-template>
+      </nz-list>
+      <nz-comment>
+        <nz-avatar nz-comment-avatar
+          nzIcon="user"
+          [nzSrc]="userSrv.userInfo.profile.avatar"></nz-avatar>
+        <nz-comment-content>
+          <nz-form-item>
+            <textarea [(ngModel)]="commentContent"
+              nz-input
+              rows="4"></textarea>
+          </nz-form-item>
+          <nz-form-item>
+            <button nz-button
+              nzType="primary"
+              [nzLoading]="submitting"
+              [disabled]="!commentContent"
+              (click)="handleSubmitComment()">
+              发布评论
+            </button>
+          </nz-form-item>
+        </nz-comment-content>
+      </nz-comment>
+    </nz-card>
+  </nz-col>
+
+  <!-- 右侧 -->
+  <nz-col nzSpan="6">
+    <nz-card nzTitle="项目进度"
+      class="mb-3">
+      <nz-steps [nzCurrent]="project.status"
+        nzDirection="vertical"
+        nzSize="small"
+        nzProgressDot>
+        <nz-step nzTitle="新发布项目"
+          nzDescription="项目已发布，平台已审核通过，还没有开发人员接单"></nz-step>
+        <nz-step nzTitle="项目开发中"
+          nzDescription="已有开发方对接，需求方已通过申请，项目开发中"></nz-step>
+        <nz-step nzTitle="项目验收中"
+          nzDescription="开发方开发已完成，项目验收中"></nz-step>
+        <nz-step nzTitle="项目已结款"
+          nzDescription="验收符合标准，源码已交付，尾款已结算，项目完成"></nz-step>
+      </nz-steps>
+      <span [ngSwitch]="project.status"
+        *ngIf="userSrv.userInfo.role === 3">
+        <button *ngSwitchCase="0"
+          nz-button
+          nzBlock
+          (click)="applyProject(1)"
+          nzType="primary">申请接单</button>
+        <button *ngSwitchCase="1"
+          nz-button
+          nzBlock
+          (click)="applyProject(2)"
+          [disabled]="userSrv.userInfo._id !== project.dev_user?._id"
+          nzType="primary">申请验收</button>
+        <button *ngSwitchCase="2"
+          nz-button
+          nzBlock
+          (click)="applyProject(3)"
+          [disabled]="userSrv.userInfo._id !== project.dev_user?._id"
+          nzType="primary">申请结款</button>
+      </span>
+    </nz-card>
+    <nz-card nzTitle="需求方"
+      class="mb-3">
+      <nz-card-meta [nzTitle]="userName1"
+        [nzDescription]="project.demand_user.email"
+        [nzAvatar]="avatarTemplate"></nz-card-meta>
+      <ng-template #userName1>
+        <a [routerLink]="['/user/profile', project.demand_user._id]">{{project.demand_user.profile.name}}</a>
+      </ng-template>
+      <ng-template #avatarTemplate>
+        <nz-avatar [nzSrc]="project.demand_user.profile.avatar"></nz-avatar>
+      </ng-template>
+    </nz-card>
+    <nz-card nzTitle="开发方"
+      *ngIf="project.dev_user">
+      <nz-card-meta [nzTitle]="userName2"
+        [nzDescription]="project.dev_user.email"
+        [nzAvatar]="avatarTemplate"></nz-card-meta>
+      <ng-template #userName2>
+        <a [routerLink]="['/user/profile', project.dev_user._id]">{{project.dev_user.profile.name}}</a>
+      </ng-template>
+      <ng-template #avatarTemplate>
+        <nz-avatar [nzSrc]="project.dev_user.profile.avatar"></nz-avatar>
+      </ng-template>
+    </nz-card>
+  </nz-col>
+</nz-row>
+<ng-template #Nzspin>
+  <nz-spin nzSimple> </nz-spin>
+</ng-template>

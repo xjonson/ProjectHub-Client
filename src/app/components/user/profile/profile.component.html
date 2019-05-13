@@ -1,0 +1,257 @@
+<nz-row nzGutter="16">
+  <nz-col nzSpan="18">
+    <nz-card *ngIf="userInfo">
+      <img [src]="userInfo.profile.avatar"
+        class="cover-img">
+      <div class="top-info">
+        <img [src]="userInfo.profile.avatar" />
+        <div class="right-info">
+          <h1>{{userInfo.profile.name}}
+            <nz-tag *ngIf="userInfo.role === 2"
+              [nzColor]="'#f50'">需求方</nz-tag>
+            <nz-tag *ngIf="userInfo.role === 3"
+              [nzColor]="'#4289dc'">开发方</nz-tag>
+          </h1>
+          <p>
+            <i nz-icon
+              nzType="mail"
+              nzTheme="fill"></i>
+            {{userInfo.email}}
+          </p>
+          <p>
+            <i nz-icon
+              nzType="phone"
+              nzTheme="fill"></i>
+            {{userInfo.profile.phone}}
+          </p>
+          <p>
+            <i nz-icon
+              nzType="profile"
+              nzTheme="fill"></i>
+            {{userInfo.profile.desc}}
+          </p>
+        </div>
+      </div>
+      <nz-tabset>
+        <nz-tab nzTitle="参与的项目">
+          <nz-list [nzDataSource]="projects"
+            [nzItemLayout]="'vertical'"
+            [nzRenderItem]="item">
+            <ng-template #item
+              let-item>
+              <nz-list-item [nzContent]="content"
+                [nzActions]="[msgAction]"
+                [nzExtra]="extra">
+                <!-- 头 -->
+                <nz-list-item-meta [nzAvatar]="item.demand_user.profile.avatar"
+                  [nzTitle]="nzTitle"
+                  [nzDescription]="item.create_time | date: 'yyyy-MM-dd hh:mm:ss'">
+                  <ng-template #nzTitle>
+                    <a [routerLink]="[ '/project/detail', item._id ]">
+                      {{ item.title }}
+                    </a>
+                    <nz-tag [nzColor]="'#4289dc'">{{item.project_type}}</nz-tag>
+                    <span [ngSwitch]="item.status">
+                      <nz-tag *ngSwitchCase="0"
+                        nzColor="green">招募中</nz-tag>
+                      <nz-tag *ngSwitchCase="1"
+                        nzColor="red">开发中</nz-tag>
+                      <nz-tag *ngSwitchCase="2"
+                        nzColor="blue">验收中</nz-tag>
+                      <nz-tag *ngSwitchCase="3">已完成</nz-tag>
+                    </span>
+                    <!-- project_type -->
+                  </ng-template>
+                </nz-list-item-meta>
+                <!-- 内容 -->
+                <ng-template #content>
+                  <p>{{item.desc}}</p>
+                  <nz-tag *ngFor="let skill of item.skills">{{skill.name}}</nz-tag>
+                </ng-template>
+                <!-- 评论 -->
+                <ng-template #msgAction>
+                  <i nz-icon
+                    type="message"
+                    style="margin-right: 8px;"></i>
+                  {{item.comments.length}}
+                </ng-template>
+                <!-- 右侧 -->
+                <ng-template #extra>
+                  <div class="list-item-extra"
+                    style="width: 272px">
+                    <span [ngSwitch]="item.project_type">
+                      <img *ngSwitchCase="'web'"
+                        src="../../../../assets/image/type_web.png">
+                      <img *ngSwitchCase="'mp'"
+                        src="../../../../assets/image/type_mp.png">
+                      <img *ngSwitchCase="'android'"
+                        src="../../../../assets/image/type_android.png">
+                    </span>
+                  </div>
+                </ng-template>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-tab>
+        <nz-tab *ngIf="userInfo.role === 3"
+          nzTitle="开发技能">
+          <nz-list [nzDataSource]="userInfo.skill"
+            [nzRenderItem]="item">
+            <ng-template #item
+              let-item>
+              <nz-list-item [nzContent]="item.name"></nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-tab>
+        <nz-tab *ngIf="userInfo._id == userSrv.userInfo._id"
+          nzTitle="编辑信息">
+          <!-- 修改信息 -->
+          <form nz-form
+            style="width: 60%"
+            [formGroup]="FormData1"
+            (ngSubmit)="submitForm1()">
+            <!-- 昵称 -->
+            <nz-form-item>
+              <nz-form-label nzRequired
+                nzFor="name">头像</nz-form-label>
+              <nz-form-control>
+                <div class="avatar-upload">
+                  <img [src]="userInfo.profile.avatar">
+                  <input type="file" (change)="uploadImg($event)" class="avatar-input">
+                </div>
+              </nz-form-control>
+            </nz-form-item>
+            <!-- 昵称 -->
+            <nz-form-item>
+              <nz-form-label nzRequired
+                nzFor="name">昵称</nz-form-label>
+              <nz-form-control>
+                <input type="text"
+                  nz-input
+                  formControlName="name"
+                  placeholder="昵称"
+                  required />
+                <nz-form-explain *ngIf="name.errors && name.dirty">
+                  <ng-container *ngIf="name.getError('required')">
+                    请输入昵称
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <!-- 手机号 -->
+            <nz-form-item>
+              <nz-form-label nzRequired
+                nzFor="name">手机号</nz-form-label>
+              <nz-form-control>
+                <input type="text"
+                  nz-input
+                  formControlName="phone"
+                  placeholder="手机号（请正确填写）"
+                  maxlength="11"
+                  required />
+                <nz-form-explain *ngIf="phone.errors && phone.dirty">
+                  <ng-container *ngIf="phone.getError('required')">
+                    请输入手机号
+                  </ng-container>
+                  <ng-container *ngIf="phone.getError('pattern')">
+                    请输入正确手机号
+                  </ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <!-- 简介 -->
+            <nz-form-item>
+              <nz-form-label nzRequired
+                nzFor="name">简介</nz-form-label>
+              <nz-form-control>
+                <textarea nz-input
+                  formControlName="desc"
+                  [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+            <!-- 技能 -->
+            <nz-form-item *ngIf="userInfo.role === 3">
+              <nz-form-label nzRequired
+                nzFor="name">技能</nz-form-label>
+              <nz-form-control>
+                <nz-select style="width: 100%"
+                  nzMode="multiple"
+                  nzPlaceHolder="选择你擅长的技能"
+                  formControlName="skillValue">
+                  <nz-option *ngFor="let skill of skills"
+                    [nzLabel]="skill.name"
+                    [nzValue]="skill.id"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+            <!-- submit -->
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button
+                  class="login-form-button"
+                  type="submit"
+                  [disabled]="!FormData1.dirty || FormData1.invalid"
+                  nzType="primary">修改信息</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+          <!-- 修改密码 -->
+          <form nz-form
+            style="width: 60%"
+            [formGroup]="FormData2"
+            (ngSubmit)="submitForm2()">
+            <!-- 旧密码 -->
+            <nz-form-item>
+              <nz-form-label nzRequired
+                nzFor="oldPwd">旧密码</nz-form-label>
+              <nz-form-control>
+                <input type="password"
+                  nz-input
+                  formControlName="oldPwd"
+                  required />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzRequired
+                nzFor="pwd1">新密码</nz-form-label>
+              <nz-form-control>
+                <input type="password"
+                  nz-input
+                  formControlName="pwd1"
+                  required />
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzRequired
+                nzFor="pwd2">重复新密码</nz-form-label>
+              <nz-form-control>
+                <input type="password"
+                  nz-input
+                  formControlName="pwd2"
+                  required />
+              </nz-form-control>
+            </nz-form-item>
+            <!-- submit -->
+            <nz-form-item>
+              <nz-form-control>
+                <button nz-button
+                  class="login-form-button"
+                  type="submit"
+                  [disabled]="FormData2.invalid"
+                  nzType="primary">修改密码</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+
+        </nz-tab>
+      </nz-tabset>
+    </nz-card>
+  </nz-col>
+
+  <!-- 右侧 -->
+  <nz-col nzSpan="6">
+    <nz-card>
+
+    </nz-card>
+  </nz-col>
+</nz-row>

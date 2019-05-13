@@ -1,0 +1,99 @@
+<nz-row nzGutter="16">
+  <nz-col nzSpan="18">
+    <nz-card>
+      <nz-tabset>
+        <nz-tab [nzTitle]="Msg1">
+          <ng-template #Msg1>
+            <nz-badge [nzCount]="noticeMsgLength">
+              <span>通知消息</span>
+            </nz-badge>
+          </ng-template>
+          <nz-list [nzDataSource]="noticeMsg"
+            [nzRenderItem]="item"
+            [nzItemLayout]="'horizontal'">
+            <ng-template #item
+              let-item>
+              <nz-list-item [nzActions]="[item.checked ? DelAction : ReadAction]">
+                <nz-list-item-meta [nzTitle]="nzTitle"
+                  [nzAvatar]="item.from_user.profile.avatar"
+                  [nzDescription]="item.content">
+                  <ng-template #nzTitle>
+                    <a [routerLink]="['/user/profile', item.from_user._id]">{{ item.from_user.profile.name }}</a>
+                    <br>
+                    <small>{{item.create_time | date: 'yyyy-MM-dd hh:mm:ss'}}</small>
+                  </ng-template>
+                </nz-list-item-meta>
+                <ng-template #DelAction>
+                  <a nz-button
+                    nzType="danger"
+                    (click)="delChecked(item._id)">删除</a>
+                </ng-template>
+                <ng-template #ReadAction>
+                  <a nz-button
+                    (click)="routeToProject(item)">查看</a>
+                </ng-template>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-tab>
+        <nz-tab [nzTitle]="Msg2">
+          <ng-template #Msg2>
+            <nz-badge [nzCount]="operableMsgLength">
+              <span>操作消息</span>
+            </nz-badge>
+          </ng-template>
+          <nz-list [nzDataSource]="operableMsg"
+            [nzRenderItem]="MsgItem"
+            [nzItemLayout]="'horizontal'">
+            <ng-template #MsgItem
+              let-item>
+              <nz-list-item [nzActions]="[item.checked ? DelAction : ReadAction]">
+                <nz-list-item-meta [nzTitle]="nzTitle"
+                  [nzAvatar]="item.from_user.profile.avatar"
+                  [nzDescription]="MsgDesc">
+                  <ng-template #nzTitle>
+                    <a [routerLink]="['/user/profile', item.from_user._id]">{{ item.from_user.profile.name }}</a>
+                    <br>
+                    <small>{{item.create_time | date: 'yyyy-MM-dd hh:mm:ss'}}</small>
+                    <!--  -->
+                  </ng-template>
+                  <ng-template #MsgDesc>
+                    您的项目：「{{item.project_title}}」{{item.content}}
+                  </ng-template>
+                </nz-list-item-meta>
+                <ng-template #DelAction>
+                  <a nz-button
+                    nzType="danger"
+                    (click)="delChecked(item._id)">删除</a>
+                </ng-template>
+                <ng-template #ReadAction>
+                  <a nz-button
+                    (click)="actionMsg(item, true)">通过</a>
+                  &nbsp;&nbsp;
+                  <a nz-button
+                    (click)="actionMsg(item, false)">不通过</a>
+                </ng-template>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-tab>
+      </nz-tabset>
+    </nz-card>
+  </nz-col>
+
+  <!-- 右侧 -->
+  <nz-col nzSpan="6">
+    <nz-card>
+      <nz-alert class="mb-4"
+        nzType="warning"
+        nzCloseable
+        nzMessage="可操作消息一般包含更新项目状态的重要信息，请阅读后谨慎操作。">
+      </nz-alert>
+      <button nz-button
+        [disabled]="!msgs.length"
+        nzType="primary"
+        (click)="delChecked()"
+        nzBlock>删除全部已读消息</button>
+    </nz-card>
+  </nz-col>
+</nz-row>

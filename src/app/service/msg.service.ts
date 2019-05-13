@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserService } from './user.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ResTpl } from '../models/ResTpl';
@@ -14,8 +13,7 @@ export class MsgService {
 
   constructor(
     private http: HttpClient,
-    private userSrv: UserService,
-    private nzMessage: NzMessageService,
+    private message: NzMessageService,
   ) { }
 
 
@@ -24,7 +22,7 @@ export class MsgService {
     return this.http.get('api/msg').pipe(
       tap((res: ResTpl) => {
         this.unReadMsg = res.data.filter(i => !i.checked).length
-        this.nzMessage.create('info', res.msg);
+        this.message.info(res.msg);
       })
     )
   }
@@ -38,7 +36,7 @@ export class MsgService {
       .pipe(
         tap((res: ResTpl) => {
           if (data.isAction) {
-            this.nzMessage.create('info', res.msg);
+            this.message.info(res.msg);
           }
         })
       )
@@ -49,12 +47,21 @@ export class MsgService {
     return this.http.patch(`api/msg/${mid}`, {})
   }
 
+  // 删除单个消息
+  delOneMsg(mid): Observable<any> {
+    return this.http.delete(`api/msg/${mid}`, {})
+      .pipe(
+        tap((res: ResTpl) => {
+          this.message.info(res.msg);
+        })
+      )
+  }
   // 删除已读
   delReadMsg(): Observable<any> {
     return this.http.delete(`api/msg/`, {})
       .pipe(
         tap((res: ResTpl) => {
-          this.nzMessage.create('info', res.msg);
+          this.message.info(res.msg);
         })
       )
   }

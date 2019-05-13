@@ -1,0 +1,27 @@
+.login {
+  margin-top: 50px;
+  text-align: center;
+  h1 {
+    font-size: 1.5em
+  }
+
+  .login-form {
+    text-align: left;
+    margin-top: 40px;
+    input {
+      height: 40px;
+    }
+  }
+
+  .ant-form-item {
+    margin-bottom: 10px;
+  }
+
+  .login-form-forgot {
+    float: right;
+  }
+
+  .login-form-button {
+    width: 100%;
+  }
+}

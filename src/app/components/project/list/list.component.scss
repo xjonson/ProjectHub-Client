@@ -1,0 +1,50 @@
+.filter-bar {
+  .filters {
+    .filter {
+      display: flex;
+      align-items: flex-start;
+      line-height: 30px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+
+      label {
+        width: 100px;
+        color: #999;
+      }
+      nz-slider {
+        width: 400px;
+      }
+      ul {
+        flex: 1;
+        margin: 0;
+        padding: 0;
+
+        li {
+          float: left;
+          padding: 0 16px;
+          margin: 0 10px 10px 0;
+          cursor: pointer;
+
+          &.on {
+            color: #fff;
+            border-radius: 2px;
+            background-color: #4289dc;
+          }
+        }
+      }
+    }
+  }
+}
+
+.list-item-extra {
+  img {
+    width: 100%;
+  }
+}
+
+.ad-wrap {
+  img {
+    width: 100%;
+  }
+}

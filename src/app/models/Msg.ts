@@ -1,4 +1,5 @@
 import { User } from './User';
+import { Project } from './Project';
 
 /**
  * @description 信息
@@ -7,9 +8,11 @@ export interface Msg {
   // id
   _id: string,
   // 项目id
-  project_id: string, 
+  project_id: string,
+  // 项目
+  project_title: string,
   // 当前评论在原项目中的id，便于查看时自动滚动到指定位置
-  project_comment_id?: string, 
+  project_comment_id?: string,
   // 信息来自的用户信息
   from_user: Partial<User>,
   // 内容
@@ -19,9 +22,11 @@ export interface Msg {
   // 创建时间
   create_time: string,
   // 是否是可操作信息
-  isAction: boolean, 
+  isAction: boolean,
   // 操作
   action: Action,
+  // 接收消息的用户id
+  user_id: string
 }
 
 /**

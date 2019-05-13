@@ -4,7 +4,9 @@ import { User } from '../models/User';
 import { map, switchMap, tap } from "rxjs/operators";
 import { Observable } from 'rxjs';
 import { ResTpl } from '../models/ResTpl';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { Router } from '@angular/router';
+import { MsgService } from './msg.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,10 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private nzMessage: NzMessageService,
+    private message: NzMessageService,
+    private router: Router,
+    private modal: NzModalService,
+    private msgSrv: MsgService,
   ) { }
 
   // 用户注册
@@ -23,21 +28,31 @@ export class UserService {
   }
 
   // 用户登录
-  login(user: Partial<User>): Observable<any> {
+  login(user): Observable<any> {
     return this.http.post('/api/user/login', user).pipe(
       tap(
-        (res: ResTpl) => {
-          if (res.code === 0) {
-            this.setUserInfo(res.data)
+        (resTpl: ResTpl) => {
+          localStorage.setItem('ph-token', resTpl.data.token)
+          if (resTpl.code === 0) {
+            this.userInfo = resTpl.data
+            // 获取信息
+            this.msgSrv.getMsgs().subscribe()
           }
         }
       )
     )
   }
 
-  setUserInfo(user: User) {
-    console.log('user: ', user);
-    this.userInfo = user
+  // 登出
+  logout() {
+    this.modal.confirm({
+      nzContent: '确定退出登录？',
+      nzOnOk: () => {
+        this.userInfo = {} as User;
+        localStorage.removeItem('ph-token');
+        this.router.navigate(['/user/login']);
+      }
+    })
   }
 
   // 获取用户信息
@@ -49,6 +64,8 @@ export class UserService {
         tap((res: ResTpl) => {
           if (res.code === 0) {
             this.userInfo = res.data
+            // 获取信息
+            this.msgSrv.getMsgs().subscribe()
           }
         })
       )
@@ -60,7 +77,7 @@ export class UserService {
     return this.http.patch(`api/user/${this.userInfo._id}`, data).pipe(
       tap(
         (res: ResTpl) => {
-          this.nzMessage.create('info', res.msg);
+          this.message.info(res.msg)
           if (res.code === 0) this.userInfo = res.data
         }
       )
@@ -76,7 +93,7 @@ export class UserService {
     return this.http.patch(`api/user/password/${'updatePassword'}`, data).pipe(
       tap(
         (res: ResTpl) => {
-          this.nzMessage.create('info', res.msg);
+          this.message.info(res.msg)
           console.log('res: ', res);
         }
       )

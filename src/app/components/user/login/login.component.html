@@ -1,0 +1,61 @@
+<div nz-row
+  nzType="flex"
+  nzJustify="center"
+  nzAlign="middle"
+  class="login">
+  <div nz-col
+    nzSpan="6">
+    <h1>登录ProjectHub</h1>
+    <p>在ProjectHub轻松实现需求与开发完美对接</p>
+    <form nz-form
+      [formGroup]="formData"
+      class="login-form"
+      (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="prefixUser">
+            <input type="text"
+              nz-input
+              nzSize="large"
+              formControlName="email"
+              placeholder="邮箱"
+              required />
+          </nz-input-group>
+          <nz-form-explain *ngIf="formData.get('email')?.dirty && formData.get('email')?.errors">请输入登录名</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-input-group [nzPrefix]="prefixLock">
+            <input type="password"
+              nz-input
+              nzSize="large"
+              formControlName="password"
+              placeholder="密码"
+              required />
+          </nz-input-group>
+          <nz-form-explain *ngIf="formData.get('password')?.dirty && formData.get('password')?.errors">请输入密码</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <label nz-checkbox
+            formControlName="remember">
+            <span>记住我</span>
+          </label>
+          <button nz-button
+            type="submit"
+            class="login-form-button"
+            [nzType]="'primary'">登录</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <ng-template #prefixUser>
+      <i nz-icon
+        type="user"></i>
+    </ng-template>
+    <ng-template #prefixLock><i nz-icon
+        type="lock"></i></ng-template>
+  </div>
+
+</div>

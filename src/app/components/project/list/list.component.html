@@ -1,0 +1,153 @@
+<nz-row nzGutter="16">
+  <nz-col nzSpan="18">
+    <!-- 筛选 -->
+    <nz-card class="mb-3 filter-bar">
+      <div class="filters">
+        <div class="filter">
+          <label>项目类型：</label>
+          <ul>
+            <li [ngClass]="{'on': formData.project_type == ''}"
+              (click)="selectPS(0)">全部</li>
+            <li *ngFor="let item of PSList"
+              [ngClass]="{'on': formData.project_type == item.type}"
+              (click)="selectPS(item)">{{item.type}}</li>
+          </ul>
+        </div>
+        <div class="filter">
+          <label>项目周期：</label>
+          <ul>
+            <li [ngClass]="{'on': formData.cycle.length == 0}"
+              (click)="selectCycle(0)">全部</li>
+            <li *ngFor="let item of cycles"
+              [ngClass]="{'on': item.on}"
+              (click)="selectCycle(item)">{{item.name}}</li>
+          </ul>
+        </div>
+        <div class="filter">
+          <label>技术栈：</label>
+          <ul>
+            <li [ngClass]="{'on': formData.skills.length == 0}"
+              (click)="selectSkill(0)">全部</li>
+            <li *ngFor="let item of skillList"
+              [ngClass]="{'on': item.on}"
+              (click)="selectSkill(item)">{{item.name}}</li>
+          </ul>
+        </div>
+        <div class="filter">
+          <label>预算：</label>
+          <nz-slider [nzRange]="true"
+            [nzMarks]="marks"
+            [nzMax]="10000"
+            [nzMin]="0"
+            [nzStep]="50"
+            [nzTipFormatter]="formatterPrice"
+            [(ngModel)]="formData.price"></nz-slider>
+        </div>
+        <div class="filter">
+          <label>估价：</label>
+          <nz-slider [nzRange]="true"
+            [nzMarks]="marks"
+            [nzMax]="10000"
+            [nzMin]="0"
+            [nzStep]="50"
+            [nzTipFormatter]="formatterPrice"
+            [(ngModel)]="formData.project_assess"></nz-slider>
+        </div>
+      </div>
+      <button class="float-right"
+        (click)="handleGetProjects()"
+        nz-button
+        nzType="primary">筛选</button>
+    </nz-card>
+
+    <!-- 项目列表 -->
+    <nz-card *ngIf="projects?.length; else NoProject">
+      <nz-list [nzDataSource]="projects"
+        [nzItemLayout]="'vertical'"
+        [nzRenderItem]="item">
+        <ng-template #item
+          let-item>
+          <nz-list-item [nzContent]="content"
+            [nzActions]="[msgAction]"
+            [nzExtra]="extra">
+            <!-- 头 -->
+            <nz-list-item-meta [nzAvatar]="item.demand_user.profile.avatar"
+              [nzTitle]="nzTitle"
+              [nzDescription]="item.create_time | date: 'yyyy-MM-dd hh:mm:ss'">
+              <ng-template #nzTitle>
+                <a [routerLink]="[ '/project/detail', item._id ]">
+                  {{ item.title }}
+                </a>
+                <nz-tag [nzColor]="'#4289dc'">{{item.project_type}}</nz-tag>
+                <span [ngSwitch]="item.status">
+                  <nz-tag *ngSwitchCase="0"
+                    nzColor="green">招募中</nz-tag>
+                  <nz-tag *ngSwitchCase="1"
+                    nzColor="red">开发中</nz-tag>
+                  <nz-tag *ngSwitchCase="2"
+                    nzColor="blue">验收中</nz-tag>
+                  <nz-tag *ngSwitchCase="3">已完成</nz-tag>
+                </span>
+                <!-- project_type -->
+              </ng-template>
+            </nz-list-item-meta>
+            <!-- 内容 -->
+            <ng-template #content>
+              <p>{{item.desc}}</p>
+              <nz-tag *ngFor="let skill of item.skills">{{skill.name}}</nz-tag>
+            </ng-template>
+            <!-- 评论 -->
+            <ng-template #msgAction>
+              <i nz-icon
+                type="message"
+                style="margin-right: 8px;"></i>
+              {{item.comments.length}}
+            </ng-template>
+            <!-- 右侧 -->
+            <ng-template #extra>
+              <div class="list-item-extra"
+                style="width: 272px">
+                <span [ngSwitch]="item.project_type">
+                  <img *ngSwitchCase="'web'"
+                    src="../../../../assets/image/type_web.png">
+                  <img *ngSwitchCase="'mp'"
+                    src="../../../../assets/image/type_mp.png">
+                  <img *ngSwitchCase="'android'"
+                    src="../../../../assets/image/type_android.png">
+                </span>
+              </div>
+            </ng-template>
+          </nz-list-item>
+        </ng-template>
+      </nz-list>
+    </nz-card>
+    <ng-template #NoProject>
+      <nz-card>
+        <nz-empty [nzNotFoundContent]="'没有项目'"></nz-empty>
+      </nz-card>
+    </ng-template>
+  </nz-col>
+
+  <!-- 右侧 -->
+  <nz-col nzSpan="6">
+    <nz-card class="mb-3 ad-wrap"
+      nzTitle="广告"
+      [nzExtra]="extraTemplate">
+      <img src="../../../../assets/image/ad_1.png" />
+    </nz-card>
+    <ng-template #extraTemplate>
+      <a>关闭</a>
+    </ng-template>
+
+    <!-- 开发方 -->
+    <!-- <nz-card *ngIf="userSrv.userInfo?.role == 3">
+    </nz-card> -->
+    <!-- 需求方 -->
+    <nz-card *ngIf="userSrv.userInfo?.role == 2">
+      <button nz-button
+        nzType="primary"
+        routerLink="/project/edit"
+        nzBlock>发布需求</button>
+    </nz-card>
+  </nz-col>
+</nz-row>

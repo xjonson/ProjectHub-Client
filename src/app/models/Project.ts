@@ -1,4 +1,3 @@
-import { Skill } from './Skill';
 import { User } from './User';
 
 // 项目
@@ -16,7 +15,7 @@ export interface Project {
   // 描述
   desc: string,
   // 技能要求
-  skills: Skill[],
+  skills: [],
   // 创建时间
   create_time: string,
   // 开发周期
@@ -30,7 +29,13 @@ export interface Project {
   // 是否审核
   audit: Audit,
   // 申请列表
-  applyList?: [],
+  applys?: [Apply],
+  // 项目类型
+  project_type: string,
+  // 项目功能
+  project_fun: [object],
+  // 项目估价
+  project_assess: number
 }
 
 /**
@@ -38,7 +43,7 @@ export interface Project {
  */
 export interface Comment {
   // id
-  _id: string, 
+  _id: string,
   // 发布评论的用户信息
   user: Partial<User>,
   // 评论内容
@@ -48,12 +53,14 @@ export interface Comment {
 }
 
 /**
- * @description 审核状态
+ * @desc 申请
  */
-export enum Audit {
-  '未审核' = 0,
-  '审核通过' = 1,
-  '审核不通过' = 2,
+export interface Apply {
+  _id?: string,
+  status: string | number,
+  user_id: string
+  // 可重新申请的时间戳 = 上传申请的时间 + 24小时
+  can_apply_time: number,
 }
 
 /**
@@ -69,19 +76,12 @@ export enum Status {
   '项目验收中' = 2,
   '项目已结款' = 3
 }
-export enum StatusText {
-  '项目已发布，还没有开发人员接单' = 0,
-  '已有开发人员对接，项目开发中' = 1,
-  '开发人员开发已完成，项目验收中' = 2,
-  '项目已完成' = 3
-}
 
 /**
- * @description 项目状态的颜色
+ * @description 审核状态
  */
-export enum Color {
-  'warn' = 0,
-  'accent' = 1,
-  'primary' = 2,
-  'theme' = 3
+export enum Audit {
+  '未审核' = 0,
+  '审核通过' = 1,
+  '审核不通过' = 2,
 }

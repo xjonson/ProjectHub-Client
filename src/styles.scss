@@ -1,2 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-zorro-antd/src/ng-zorro-antd.css";
+
+.ant-list-vertical .ant-list-item-meta-title {
+  margin-bottom: 0 !important;
+}
+
+.ant-steps-dot .ant-steps-item-content {
+  width: auto !important;
+}
