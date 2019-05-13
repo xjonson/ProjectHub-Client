@@ -49,7 +49,7 @@ export class MsgsComponent implements OnInit {
   }
 
   // 删除已读
-  delChecked(id) {
+  delChecked(id?) {
     this.modal.confirm({
       nzContent: '删除后不可恢复！确认删除？',
       nzOnOk: () => {
