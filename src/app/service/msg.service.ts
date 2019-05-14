@@ -44,12 +44,12 @@ export class MsgService {
 
   // 消息已读
   readMsg(mid): Observable<any> {
-    return this.http.patch(`api/msg/${mid}`, {})
+    return this.http.patch(`/api/msg/${mid}`, {})
   }
 
   // 删除单个消息
   delOneMsg(mid): Observable<any> {
-    return this.http.delete(`api/msg/${mid}`, {})
+    return this.http.delete(`/api/msg/${mid}`, {})
       .pipe(
         tap((res: ResTpl) => {
           this.message.info(res.msg);
@@ -58,7 +58,7 @@ export class MsgService {
   }
   // 删除已读
   delReadMsg(): Observable<any> {
-    return this.http.delete(`api/msg/`, {})
+    return this.http.delete(`/api/msg/`, {})
       .pipe(
         tap((res: ResTpl) => {
           this.message.info(res.msg);

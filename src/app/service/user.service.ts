@@ -74,7 +74,7 @@ export class UserService {
 
   // 更新信息
   updateUserInfo(data: Partial<User>) {
-    return this.http.patch(`api/user/${this.userInfo._id}`, data).pipe(
+    return this.http.patch(`/api/user/${this.userInfo._id}`, data).pipe(
       tap(
         (res: ResTpl) => {
           this.message.info(res.msg)
@@ -90,7 +90,7 @@ export class UserService {
       oldPwd,
       newPwd
     }
-    return this.http.patch(`api/user/password/${'updatePassword'}`, data).pipe(
+    return this.http.patch(`/api/user/password/${'updatePassword'}`, data).pipe(
       tap(
         (res: ResTpl) => {
           this.message.info(res.msg)
