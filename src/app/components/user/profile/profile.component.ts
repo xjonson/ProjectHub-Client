@@ -138,7 +138,8 @@ export class ProfileComponent implements OnInit {
     this.userInfo.profile.phone = formDataValue.phone
     this.userInfo.profile.desc = formDataValue.desc
     this.userInfo.skill = formDataValue.skill
-    this.userSrv.updateUserInfo(this.userSrv.userInfo).subscribe(res => {
+    console.log('formDataValue: ', formDataValue);
+    this.userSrv.updateUserInfo(this.userInfo).subscribe(res => {
       if (res.code === 0) {
         this.modal.info({
           nzContent: '修改成功'
