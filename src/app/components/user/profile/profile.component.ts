@@ -30,6 +30,15 @@ export class ProfileComponent implements OnInit {
   loading = false;
   avatarUrl: string;
 
+  get name(): AbstractControl {
+    return this.FormData1.get('name')
+  }
+  get phone(): AbstractControl {
+    return this.FormData1.get('phone')
+  }
+  get skill(): AbstractControl {
+    return this.FormData1.get('skill')
+  }
   constructor(
     public userSrv: UserService,
     private projectSrv: ProjectService,
@@ -46,6 +55,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.getUserInfo()
   }
+
   // 获取用户信息
   getUserInfo() {
     this.route.params.subscribe(params => {
@@ -55,12 +65,11 @@ export class ProfileComponent implements OnInit {
           this.userInfo = resTpl.data
           this.handleGetProjects()
           // 是自己，初始化表单
-          if (id == resTpl.data._id) {
+          if (id == this.userSrv.userInfo._id) {
             this.initForm()
           }
         }
       })
-
     })
   }
 
@@ -84,17 +93,8 @@ export class ProfileComponent implements OnInit {
     )
   }
 
-  get name(): AbstractControl {
-    return this.FormData1.get('name')
-  }
-  get phone(): AbstractControl {
-    return this.FormData1.get('phone')
-  }
-  get skill(): AbstractControl {
-    return this.FormData1.get('skill')
-  }
 
-
+  // -------------如果是自己主页则可操作-----------
   // 表单初始化
   initForm() {
     this.handleGetSkills()
@@ -113,7 +113,6 @@ export class ProfileComponent implements OnInit {
       ]],
     })
   }
-
 
   // 获取全部skill
   handleGetSkills() {
@@ -172,7 +171,6 @@ export class ProfileComponent implements OnInit {
     )
 
   }
-
 
   // 选择图片
   handleChooseImg() {

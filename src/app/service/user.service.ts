@@ -58,18 +58,30 @@ export class UserService {
   // 获取用户信息
   getUserInfo(id?: string) {
     if (id) {
-      return this.http.get(`/api/user/${id}`)
+      return this.http.get(`/api/user/${id}`).pipe(
+        tap((res: ResTpl) => {
+          // 如果是自己
+          if (res.code === 0 && res.data._id == this.userInfo) {
+            this.setSelfUserInfo(res.data)
+          }
+        })
+      )
     } else {
       return this.http.get(`/api/user/self`).pipe(
         tap((res: ResTpl) => {
           if (res.code === 0) {
-            this.userInfo = res.data
-            // 获取信息
-            this.msgSrv.getMsgs().subscribe()
+            this.setSelfUserInfo(res.data)
           }
         })
       )
     }
+  }
+
+  // 设置自身信息
+  setSelfUserInfo(userInfo: User) {
+    this.userInfo = userInfo
+    // 获取信息
+    this.msgSrv.getMsgs().subscribe()
   }
 
   // 更新信息

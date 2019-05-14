@@ -39,6 +39,7 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.userSrv.userInfo)
     this.cycles = this.projectSrv.cycles
     this.handleGetSkills()
     this.handleGetPS()
