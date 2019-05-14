@@ -65,7 +65,7 @@ export class ProjectService {
 
   // 发布项目
   addProject(data: Project): Observable<any> {
-    return this.http.post('api/project', data)
+    return this.http.post('/api/project', data)
   }
 
   // 更新项目信息
