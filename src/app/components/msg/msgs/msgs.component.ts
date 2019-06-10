@@ -88,35 +88,19 @@ export class MsgsComponent implements OnInit {
   actionMsg(msg: Msg, confirm: boolean) {
     // 确认：更新项目状态
     if (confirm) {
-      this.projectSrv.updateProjectStatus(msg.project_id, msg.action, msg.from_user).subscribe(
-        (resTpl: ResTpl) => {
-          if (resTpl.code === 0) {
-            switch (msg.action) {
-              case 1:
-                // 申请接单
-
-                break;
-              case 2:
-                // 申请验收
-
-                break;
-              case 3:
-                // 申请结款
-
-                break;
-            }
-          }
-        }
-      )
+      this.projectSrv.updateProjectStatus(msg.project_id, msg.action, msg.from_user).subscribe()
     }
 
     // 确认&取消的统一操作：
     // 已读
-    this.msgSrv.readMsg(msg._id).subscribe()
-    // 发送反馈信息
-    this.handleSendMsg(msg, confirm)
-    // 刷新
-    this.handleGetMsgs()
+    this.msgSrv.readMsg(msg._id).subscribe(
+      () => {
+        // 发送反馈信息
+        this.handleSendMsg(msg, confirm)
+        // 刷新
+        this.handleGetMsgs()
+      }
+    )
   }
 
   // 查看通知消息

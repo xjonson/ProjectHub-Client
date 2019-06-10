@@ -2,12 +2,15 @@ import { Injectable } from "@angular/core";
 import { HttpEvent, HttpRequest, HttpHandler, HttpInterceptor, HttpResponse, HttpErrorResponse } from "@angular/common/http";
 
 import { Observable, of } from "rxjs";
-import { mergeMap, catchError } from 'rxjs/operators';
+import { mergeMap, catchError, tap } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
@@ -29,13 +32,11 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
         switch (err.status) {
           case 401: // 未登录状态码
-            if (
-              !(
-                location.href.indexOf('/user/login') > 0 ||
-                location.href.indexOf('/user/register') > 0 ||
-                location.href.indexOf('/home') > 0
-              )
-            ) {
+            if (!(
+              location.href.indexOf('/user/login') > 0 ||
+              location.href.indexOf('/user/register') > 0 ||
+              location.href.indexOf('/home') > 0
+            )) {
               this.modal.error({
                 nzContent: '身份信息过期，请重新登录',
                 nzOnOk: () => {

@@ -6,6 +6,8 @@ import { Project } from 'src/app/models/Project';
 import { ProjectStep } from 'src/app/models/ProjectStep';
 import { SkillService } from 'src/app/service/skill.service';
 import { UserService } from 'src/app/service/user.service';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-list',
@@ -36,6 +38,8 @@ export class ListComponent implements OnInit {
     private projStepSrv: ProjectStepService,
     private skillSrv: SkillService,
     public userSrv: UserService,
+    private router: Router,
+    private message: NzMessageService,
   ) { }
 
   ngOnInit() {
@@ -116,6 +120,15 @@ export class ListComponent implements OnInit {
     } else {
       item.on = true
       this.formData.skills.push(item.id)
+    }
+  }
+
+  // 跳转到发布项目
+  pushToEditProject() {
+    if(this.userSrv.userInfo.audit !== 1) {
+      this.message.error('您的账号正在审核，审核成功后才能申请接单')
+    } else {
+      this.router.navigate(['/project/edit'])
     }
   }
 

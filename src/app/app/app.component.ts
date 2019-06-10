@@ -4,6 +4,7 @@ import { UserService } from '../service/user.service';
 import { AuthService } from '../service/auth.service';
 import { User } from '../models/User';
 import { MsgService } from '../service/msg.service';
+import { AuthInterceptor } from '../service/AuthInterceptor';
 
 interface Dashboard {
   user: DashboardDate[],
@@ -26,6 +27,7 @@ export class AppComponent {
     public userSrv: UserService,
     private authSrv: AuthService,
     public msgSrv: MsgService,
+    public interceptor: AuthInterceptor,
   ) { }
 
   ngOnInit(): void {

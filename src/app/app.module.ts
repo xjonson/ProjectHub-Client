@@ -17,7 +17,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
   declarations: [
     AppComponent,
     HomeComponent,
-    NotFoundComponent
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

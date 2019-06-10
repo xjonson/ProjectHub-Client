@@ -146,7 +146,7 @@
     <nz-card *ngIf="userSrv.userInfo?.role == 2">
       <button nz-button
         nzType="primary"
-        routerLink="/project/edit"
+        (click)="pushToEditProject()"
         nzBlock>发布需求</button>
     </nz-card>
   </nz-col>

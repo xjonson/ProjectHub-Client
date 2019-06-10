@@ -93,7 +93,6 @@ export class ProfileComponent implements OnInit {
     )
   }
 
-
   // -------------如果是自己主页则可操作-----------
   // 表单初始化
   initForm() {

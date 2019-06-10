@@ -1,64 +1,67 @@
-<nav>
-  <a class="logo"
-    routerLink="/home">
-    <img src="assets/image/logo.png" />
-  </a>
-  <ul>
-    <li routerLink="/home"
-      routerLinkActive="active">首页</li>
-    <li routerLink="/project"
-      routerLinkActive="active">项目</li>
-  </ul>
-  <div class="right-block">
-    <nz-dropdown *ngIf="userSrv.userInfo?._id; else Login"
-      [nzPlacement]="'bottomRight'">
-      <div nz-dropdown>
-        <nz-badge [nzCount]="msgSrv.unReadMsg">
-          <nz-avatar nzIcon="user"
-            class="mr-2"
-            [nzShape]="'square'"
-            [nzSrc]="userSrv.userInfo.profile.avatar"></nz-avatar>
-        </nz-badge>
-        <span>{{userSrv.userInfo.profile.name}}</span>
-        <i nz-icon
-          style="font-size: 16px;vertical-align: middle;margin-left: 6px;"
-          type="down"></i>
-      </div>
-      <ul nz-menu
-        nzSelectable>
-        <li nz-menu-item
-          [routerLink]="[ '/user/profile', userSrv.userInfo._id ]">
-          <a>个人中心</a>
-        </li>
-        <li nz-menu-item
-          routerLink="/msg">
-          <a>消息通知
-          </a>
-        </li>
-        <li nz-menu-divider></li>
-        <li nz-menu-item
-          (click)="handleLogOut()">
-          <a>退出登录</a>
-        </li>
-      </ul>
-    </nz-dropdown>
-    <ng-template #Login>
-      <div class="login-btns">
-        <button nz-button
-          routerLink="/user/register"
-          nzType="default">注册</button>
-        <button nz-button
-          routerLink="/user/login"
-          nzType="primary">登录</button>
-      </div>
-    </ng-template>
-  </div>
-</nav>
+<div>
+  <nav>
+    <a class="logo"
+      routerLink="/home">
+      <img src="assets/image/logo.png" />
+    </a>
+    <ul>
+      <li routerLink="/home"
+        routerLinkActive="active">首页</li>
+      <li routerLink="/project"
+        routerLinkActive="active">项目</li>
+    </ul>
+    <div class="right-block">
+      <nz-dropdown *ngIf="userSrv.userInfo?._id; else Login"
+        [nzPlacement]="'bottomRight'">
+        <div nz-dropdown>
+          <nz-badge [nzCount]="msgSrv.unReadMsg">
+            <nz-avatar nzIcon="user"
+              class="mr-2"
+              [nzShape]="'square'"
+              [nzSrc]="userSrv.userInfo.profile.avatar"></nz-avatar>
+          </nz-badge>
+          <span>{{userSrv.userInfo.profile.name}}</span>
+          <i nz-icon
+            style="font-size: 16px;vertical-align: middle;margin-left: 6px;"
+            type="down"></i>
+        </div>
+        <ul nz-menu
+          nzSelectable>
+          <li nz-menu-item
+            [routerLink]="[ '/user/profile', userSrv.userInfo._id ]">
+            <a>个人中心</a>
+          </li>
+          <li nz-menu-item
+            routerLink="/msg">
+            <a>消息通知
+            </a>
+          </li>
+          <li nz-menu-divider></li>
+          <li nz-menu-item
+            (click)="handleLogOut()">
+            <a>退出登录</a>
+          </li>
+        </ul>
+      </nz-dropdown>
+      <ng-template #Login>
+        <div class="login-btns">
+          <button nz-button
+            routerLink="/user/register"
+            nzType="default">注册</button>
+          <button nz-button
+            routerLink="/user/login"
+            nzType="primary">登录</button>
+        </div>
+      </ng-template>
+    </div>
+  </nav>
 
-<div class="container">
-  <div class="main-wrap">
-    <router-outlet></router-outlet>
+  <div class="container">
+    <div class="main-wrap">
+      <router-outlet></router-outlet>
+    </div>
   </div>
+
   <footer>
     ProjectHub&nbsp;&nbsp;©&nbsp;2019&nbsp;&nbsp;&nbsp;Dev.&nbsp;By&nbsp;JonsonXu
   </footer>

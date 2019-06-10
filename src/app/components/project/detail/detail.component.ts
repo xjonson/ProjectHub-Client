@@ -73,7 +73,7 @@ export class DetailComponent implements OnInit {
   // 申请订单
   applyProject(action): void {
     if (this.userSrv.userInfo.audit !== 1) {
-      alert('您的账号正在审核，审核成功后才能申请接单')
+      this.message.error('您的账号正在审核，审核成功后才能申请接单')
     } else {
       const userInfo = this.userSrv.userInfo
       // 如果applys中有相同用户id和aciton=status，说明已经申请过

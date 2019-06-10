@@ -71,6 +71,7 @@ export class RegisterComponent implements OnInit {
         ]]
       }, { validator: this.passwordRepeat }),
       role: [2, [Validators.required]],
+      audit: [0],
       create_time: [new Date()],
       skill: [[]],
       profile: this.fb.group({
@@ -102,7 +103,7 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  // 提交
+  // 提交表单
   submitForm() {
     const formData = this.registerForm.value
     console.log('formData: ', formData);

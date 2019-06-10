@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
     private message: NzMessageService,
   ) { }
 
+  // on init
   ngOnInit() {
     this.formData = this.fb.group({
       email: [null, [Validators.required]],
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  // 提交表单
   submitForm() {
     this.userSrv.login(this.formData.value).subscribe((resTpl: ResTpl) => {
       if (resTpl.code === 0) {
