@@ -126,7 +126,7 @@ export class ListComponent implements OnInit {
   // 跳转到发布项目
   pushToEditProject() {
     if(this.userSrv.userInfo.audit !== 1) {
-      this.message.error('您的账号正在审核，审核成功后才能申请接单')
+      this.message.error('您的账号正在审核，审核成功后才能发布项目')
     } else {
       this.router.navigate(['/project/edit'])
     }

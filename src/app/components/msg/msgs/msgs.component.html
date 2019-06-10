@@ -58,7 +58,8 @@
                     <!--  -->
                   </ng-template>
                   <ng-template #MsgDesc>
-                    您的项目：「{{item.project_title}}」{{item.content}}
+                    <span *ngIf="item.project_title">您的项目：「{{item.project_title}}」</span>
+                    {{item.content}}
                   </ng-template>
                 </nz-list-item-meta>
                 <ng-template #DelAction>
