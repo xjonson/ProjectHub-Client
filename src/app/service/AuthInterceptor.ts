@@ -4,7 +4,7 @@ import { HttpEvent, HttpRequest, HttpHandler, HttpInterceptor, HttpResponse, Htt
 import { Observable, of } from "rxjs";
 import { mergeMap, catchError, tap } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 
 
 @Injectable({
@@ -12,21 +12,32 @@ import { NzModalService } from 'ng-zorro-antd';
 })
 
 export class AuthInterceptor implements HttpInterceptor {
+  msgId;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private nzMessage: NzMessageService,
   ) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('ph-token') ? localStorage.getItem('ph-token') : ''
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    // loading
+    this.msgId = this.nzMessage.loading('loading...', { nzDuration: 0 }).messageId;
 
+    const token = localStorage.getItem('ph-token') ? localStorage.getItem('ph-token') : '';
     const clonedRequest = req.clone({
       headers: req.headers.set("Authorization", token)
     });
 
     return next.handle(clonedRequest).pipe(
       mergeMap((event: any) => {
+        // remove loading
+        this.nzMessage.remove(this.msgId);
+        this.msgId = null;
         return of(event);
       }),
       catchError((err: HttpErrorResponse) => {
